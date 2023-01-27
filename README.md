@@ -21,3 +21,12 @@ posts table
 | updatedAt | DATETIME |
 | user_id | INT | 
 
+
+likes table
+| Column | Datatype |
+| --- | --- | 
+| id | INT |
+| user_id | INT |
+| post_id | INT |
+| createdAt | DATETIME | 
+| updatedAt | DATETIME |
