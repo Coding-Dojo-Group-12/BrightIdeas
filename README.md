@@ -19,4 +19,5 @@ Posts Table Structure
 | content | VARCHAR(255) |
 | createdAt | DATETIME |
 | updatedAt | DATETIME |
+| user_id | INT | 
 
