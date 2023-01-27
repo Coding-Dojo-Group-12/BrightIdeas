@@ -1,6 +1,8 @@
 # BrightIdeas
 
 User Table Structure
+| users |
+| --- |
 | Column | Datatype |
 | --- | --- |
 | id | INT |
@@ -13,6 +15,8 @@ User Table Structure
 
 
 Posts Table Structure
+| posts |
+| --- |
 | Column | Datatype |
 | --- | --- |
 | id | INT |
