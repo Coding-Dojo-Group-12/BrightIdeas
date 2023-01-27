@@ -1,6 +1,6 @@
 # BrightIdeas
 
-User Table Structure
+users table
 | Column | Datatype |
 | --- | --- |
 | id | INT |
@@ -10,3 +10,14 @@ User Table Structure
 | password | VARCHAR(255) |
 | createdAt | DATETIME |
 | updatedAt | DATETIME |
+
+
+posts table
+| Column | Datatype |
+| --- | --- |
+| id | INT |
+| content | VARCHAR(255) |
+| createdAt | DATETIME |
+| updatedAt | DATETIME |
+| user_id | INT | 
+
