@@ -10,3 +10,13 @@ User Table Structure
 | password | VARCHAR(255) |
 | createdAt | DATETIME |
 | updatedAt | DATETIME |
+
+
+Posts Table Structure
+| Column | Datatype |
+| --- | --- |
+| id | INT |
+| content | VARCHAR(255) |
+| createdAt | DATETIME |
+| updatedAt | DATETIME |
+
