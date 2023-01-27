@@ -1,8 +1,6 @@
 # BrightIdeas
 
-User Table Structure
-| users |
-| --- |
+users table
 | Column | Datatype |
 | --- | --- |
 | id | INT |
@@ -14,9 +12,7 @@ User Table Structure
 | updatedAt | DATETIME |
 
 
-Posts Table Structure
-| posts |
-| --- |
+posts table
 | Column | Datatype |
 | --- | --- |
 | id | INT |
