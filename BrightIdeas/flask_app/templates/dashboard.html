@@ -8,7 +8,27 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-    <h1 class="text-center">Welcome {{user.firstName}}!!!</h1>
+    <h1 class="text-center">Hi {{user.firstName}}!</h1>
     <a href="/logout" class="btn btn-info">Logout</a>
+    <form action='/dashboard' method='post'>
+        {% with messages = get_flashed_messages(category_filter=['post'])%}
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div>
+            <input type='text' name='content' placeholder='Post something witty here...' >
+            <input type='submit' value='Idea!'>
+        </div>
+    </form>
+    <div id='posts'>
+        <ul>
+            {% for post in posts %}
+                <li>{{ post.content }} - <a href='/profile/{{ post.user.id }}'><b>{{ post.user.firstName }}</b></a></li> 
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
