@@ -40,6 +40,7 @@ class User:
     def get_by_id(cls,data):
         query = 'SELECT * FROM users WHERE id = %(id)s;'
         results = connectToMySQL(cls.db).query_db(query,data)
+        # print(results)
         return cls(results[0])
     
     @staticmethod

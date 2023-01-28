@@ -19,7 +19,7 @@ class Post:
         return connectToMySQL(cls.db).query_db(query,data)
     
     @classmethod
-    def get_All(cls):
+    def get_all(cls):
         query = "SELECT * FROM posts;"
         results = connectToMySQL(cls.db).query_db(query)
         posts = []
@@ -52,8 +52,8 @@ class Post:
             post = cls(results[0])
             userData = {
                 'id':row['users.id'],
-                'first_name':row['first_name'],
-                'last_name':row['last_name'],
+                'firstName':row['firstName'],
+                'lastName':row['lastName'],
                 'email':row['email'],
                 'password':row['password'],
                 'createdAt':row['users.createdAt'],
