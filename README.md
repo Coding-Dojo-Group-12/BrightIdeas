@@ -17,6 +17,7 @@ posts table
 | --- | --- |
 | id | INT |
 | content | VARCHAR(255) |
+| likes | INT |
 | createdAt | DATETIME |
 | updatedAt | DATETIME |
 | user_id | INT | 
