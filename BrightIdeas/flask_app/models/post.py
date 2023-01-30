@@ -8,6 +8,7 @@ class Post:
     def __init__(self,data):
         self.id = data['id']
         self.content = data['content']
+        self.likes = data['likes']
         self.createdAt = data['createdAt']
         self.updatedAt = data['updatedAt']
         self.user_id = data['user_id']
