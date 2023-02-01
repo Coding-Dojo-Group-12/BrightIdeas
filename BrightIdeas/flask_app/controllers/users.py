@@ -40,21 +40,6 @@ def login():
 def dashboard():
     if 'user_id' not in session:
         return redirect('/logout')
-    if request.method == 'POST':
-        if request.form.get('like_post_id'):
-            data = {
-                'post_id' : request.form['like_post_id'],
-                'user_id' : session['user_id']
-            }
-            Like.save(data)
-        else:
-            if not Post.validate_post(request.form):
-                return redirect('/dashboard')
-            data = {
-                'content' : request.form['content'],
-                'user_id' : session['user_id']
-            }
-            Post.save(data)
     userData ={
         'id': session['user_id']
     }

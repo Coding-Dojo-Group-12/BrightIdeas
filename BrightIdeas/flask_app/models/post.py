@@ -16,7 +16,7 @@ class Post:
         
     @classmethod
     def save(cls,data):
-        query = 'INSERT INTO posts (content, user_id) VALUES (%(content)s, %(user_id)s);'
+        query = 'INSERT INTO posts (content, likes, user_id) VALUES (%(content)s, %(likes)s, %(user_id)s);'
         return connectToMySQL(cls.db).query_db(query,data)
     
     @classmethod
@@ -64,6 +64,20 @@ class Post:
             post.user = oneUser
             allPosts.append(post)
         return allPosts
+    
+    @classmethod
+    def postLike(cls,data):
+        query = 'SELECT * FROM likes LEFT JOIN posts ON likes.post_id = posts.id WHERE posts.id = %(id)s;'
+        results = connectToMySQL('users').query_db(query,data)
+        allLikes = []
+        for row in results:
+            likeData = {
+                'id' : row['likes.id'],
+                'user_id' : row['user_id'],
+                'post_id' : row['post_id']
+            }
+            allLikes.append(likeData)
+        return allLikes
     
     @staticmethod
     def validate_post(post):

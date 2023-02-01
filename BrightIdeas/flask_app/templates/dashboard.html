@@ -11,7 +11,7 @@
     <h1 class="text-center">Hi {{user.firstName}}!</h1>
     <a href="/logout" class="btn btn-info">Logout</a>
     <div class='container'>
-        <form action='/dashboard' method='post'>
+        <form action='/create/post' method='post'>
             {% with messages = get_flashed_messages(category_filter=['post'])%}
                 {% if messages %}
                 <div class="alert alert-danger col-4" role="alert">
@@ -23,13 +23,14 @@
             {% endwith %}
             <div class='form-group col-6'>
                 <input type='text' name='content' placeholder='Post something witty here...' class='form-control' >
+                <input type='hidden' name='user_id' value='{{ user.id }}'>
                 <input type='submit' value='Idea!' class='btn btn-primary'>
             </div>
         </form>
         <div id='posts'>
             <ul >
                 {% for post in posts %}
-                    <li><a href='/profile/{{ post.user.id }}'><b>{{ post.user.firstName }}</b></a> says: {{ post.content }} 
+                    <li><a href='/profile/{{ post.user.id }}'><b>{{ post.user.firstName }}</b></a> says: {{ post.content }}
                         <form action='/like' method='post'>
                             <input type='hidden' name='post_id' value='{{ post.id }}'>
                             <input type='hidden' name='user_id' value='{{ user.id }}'>

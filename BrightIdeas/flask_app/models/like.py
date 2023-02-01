@@ -4,9 +4,10 @@ from flask_app.models import user, post
 class Like:
     db = 'BrightIdeas'
     
-    def __init__(self, user_id, post_id):
-        self.user_id = user_id
-        self.post_id = post_id
+    def __init__(self, data):
+        self.id = data['id']
+        self.user_id = data['user_id']
+        self.post_id = data['post_id']
         
     @classmethod    
     def save(cls,data):
