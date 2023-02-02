@@ -6,29 +6,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
 </head>
 <body>
-    <h1 class="text-center">Hi {{user.firstName}}!</h1>
-    <a href="/logout" class="btn btn-info">Logout</a>
-    <form action='/dashboard' method='post'>
-        {% with messages = get_flashed_messages(category_filter=['post'])%}
-            {% if messages %}
-                {% for message in messages %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        <div>
-            <input type='text' name='content' placeholder='Post something witty here...' >
-            <input type='submit' value='Idea!'>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard">Bright Ideas</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/dashboard">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/profile/{{ user.id }}">My Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                </ul>
+            </div>
         </div>
-    </form>
-    <div id='posts'>
-        <ul>
+    </nav>
+    
+    <!-- Header -->
+    <header class="py-2 bg-light border-bottom mb-4">
+        <div class="container">
+            <div class="text-center my-5">
+                <h1 class="fw-bolder">Hi {{user.firstName}}!</h1>
+                <p class="lead mb-0"><img height="100px" width="100px" src="static/assets/lightbulb.png" alt="lightbulb_pic"/> Welcome to the Bright Ideas Home Page</p>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Page content-->
+    <div class="container">
+        <form action='/dashboard' method='post'>
+            {% with messages = get_flashed_messages(category_filter=['post'])%}
+                {% if messages %}
+                    <div class="alert alert-danger col-4" role="alert">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <div class='form-group col-6'>
+                <input type='text' name='content' placeholder='Post something witty here...' class='form-control' >
+                <input type='submit' value='Idea!' class='btn btn-primary'>
+            </div>
+        </form>
+        <div class="row">
+            <!-- Idea entries-->
             {% for post in posts %}
-                <li>{{ post.content }} - <a href='/profile/{{ post.user.id }}'><b>{{ post.user.firstName }}</b></a></li> 
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form action='/like' method='post'>
+                            <div class="small text-muted">{{ post.createdAt.strftime("%B %e %Y") }}</div>
+                            <h2 class="card-title"><a href='/profile/{{ post.user.id }}'><b>{{ post.user.firstName }}</b></a></h2>
+                            <p class="card-text">Idea: {{ post.content }}</p>
+                                <input type='hidden' name='post_id' value='{{ post.id }}'>
+                                <input type='hidden' name='user_id' value='{{ user.id }}'>
+                                {% if post.is_liked_by_user %}
+                                    <input type='submit' value='Unlike' class='btn btn-danger'>
+                                {% else %}
+                                    <input type='submit' value='Like' class='btn btn-primary'>
+                                {% endif %}
+                                <a href="/show/post/{{ post.id }}">View</a>
+                                {% if post.user_id == session["user_id"] %}
+                                    <a href="/edit/post/{{ post.id }}">Edit</a>
+                                    <a href="/delete/post/{{ post.id }}">Delete</a>
+                                {% endif %}
+                            <h4>({{ post.num_likes }} likes)</h4>
+                        </form>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
     </div>
+    <!-- Footer-->
+    <footer class="py-5 bg-dark">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Bright Ideas 2023</p></div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
 </body>
 </html>
