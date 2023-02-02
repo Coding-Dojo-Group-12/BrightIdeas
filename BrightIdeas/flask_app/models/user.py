@@ -2,6 +2,7 @@ from flask_app.config.mysqlconnection import connectToMySQL
 import re
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 from flask import flash
+from flask_app.models import post
 
 class User:
     db = 'BrightIdeas'
@@ -13,6 +14,7 @@ class User:
         self.password = data['password']
         self.createdAt = data['createdAt']
         self.updatedAt = data['updatedAt']
+        self.posts = []
         
     @classmethod
     def save(cls,data):
@@ -41,7 +43,35 @@ class User:
         query = 'SELECT * FROM users WHERE id = %(id)s;'
         results = connectToMySQL(cls.db).query_db(query,data)
         # print(results)
-        return cls(results[0])
+        if len(results) == 0:
+            return None
+        else:
+            return cls(results[0])
+    
+    @classmethod
+    def get_all_users_posts(cls, data):
+        query = """
+        SELECT * FROM users
+        LEFT JOIN posts
+        ON users.id = posts.user_id
+        WHERE users.id = %(id)s;
+        """
+        results = connectToMySQL(cls.db).query_db(query, data)
+        if len(results) == 0:
+            return []
+        else:
+            user_object = cls(results[0])
+            for user_posts in results:
+                post_dict = {
+                    "id": user_posts["posts.id"],
+                    "content": user_posts["content"],
+                    "createdAt": user_posts["posts.createdAt"],
+                    "updatedAt": user_posts["posts.updatedAt"],
+                    "user_id": user_posts["user_id"],
+                }
+                post_obj = post.Post(post_dict)
+                user_object.posts.append(post_obj)
+            return user_object
     
     @staticmethod
     def validate_register(user):
