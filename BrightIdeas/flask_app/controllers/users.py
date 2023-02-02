@@ -2,6 +2,7 @@ from flask import render_template, redirect, session, request, flash
 from flask_app import app
 from flask_app.models.user import User
 from flask_app.models.post import Post
+from flask_app.models.like import Like
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
 
@@ -27,10 +28,10 @@ def register():
 def login():
     user = User.get_by_email(request.form)
     if not user:
-        flash('Invalid email', 'login')
+        flash('Invalid Login', 'login')
         return redirect('/')
     if not bcrypt.check_password_hash(user.password, request.form['password']):
-        flash('Invalid password', 'login')
+        flash('Invalid Login', 'login')
         return redirect('/')
     session['user_id'] = user.id
     return redirect('/dashboard')
@@ -40,26 +41,42 @@ def dashboard():
     if 'user_id' not in session:
         return redirect('/logout')
     if request.method == 'POST':
-        if not Post.validate_post(request.form):
-            return redirect('/dashboard')
-        data = {
-            'content' : request.form['content'],
-            'user_id' : session['user_id']
-        }
-        Post.save(data)
+        if request.form.get('like_post_id'):
+            data = {
+                'post_id' : request.form['like_post_id'],
+                'user_id' : session['user_id']
+            }
+            Like.save(data)
+        else:
+            if not Post.validate_post(request.form):
+                return redirect('/dashboard')
+            data = {
+                'content' : request.form['content'],
+                'user_id' : session['user_id']
+            }
+            Post.save(data)
     userData ={
         'id': session['user_id']
     }
     user = User.get_by_id(userData)
-    posts = Post.get_all()
+    posts = Post.get_all_posts()
     for post in posts:
         post.user = User.get_by_id({'id':post.user_id})
+        post.likes = Like.count_likes({'post_id' : post.id})
     return render_template('dashboard.html', user=user, posts=posts)
 
 @app.route('/profile/<id>')
 def profile(id):
+    if 'user_id' not in session:
+        return redirect('/logout')
+    data ={
+        "user_id": id
+    }
     user = User.get_by_id({'id': id})
-    return render_template('profile.html', user=user)
+    all_posts = Post.get_all_posts_by_user(data)
+    print(all_posts)
+    return render_template('profile.html', user=user, all_posts=all_posts)
+
 
 
 @app.route('/logout')
