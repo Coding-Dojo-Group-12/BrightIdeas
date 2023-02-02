@@ -31,7 +31,7 @@
         <div class="container">
             <div class="text-center my-5">
                 <h1 class="fw-bolder">{{user.firstName}} {{ user.lastName }}</h1>
-                <p class="lead mb-0"><img height="100px" width="100px" src="BrightIdeas\BrightIdeas\flask_app\static\assets\lightbulb.png" alt="lightbulb_pic"/></p>
+                <p class="lead mb-0"><img height="100px" width="100px" src="static/assets/lightbulb.png" alt="lightbulb_pic"/></p>
                 <p>Email: {{ user.email }}</p>
                 <div class="row">
                     <h3>Posts:</h3>
@@ -43,12 +43,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for posts in user.all_posts %}
-                            <tr>
-                                <td>{{ posts.content }}</td>
-                                <td>{{ posts.createdAt.strftime("%B %e %Y") }}</td>
-                            </tr>
+                            {% for post in all_posts %}
+                                <tr>
+                                    <td>{{ post.content }}</td>
+                                    <td>{{ post.createdAt.strftime("%B %e %Y") }}</td>
+                                </tr>
                             {% endfor %}
+
                         </tbody>
                     </table>
                 </div>

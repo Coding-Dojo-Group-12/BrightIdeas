@@ -70,10 +70,13 @@ def profile(id):
     if 'user_id' not in session:
         return redirect('/logout')
     data ={
-        "id": session['user_id']
+        "user_id": id
     }
     user = User.get_by_id({'id': id})
-    return render_template('profile.html', user=user, all_posts=User.get_all_users_posts(data))
+    all_posts = Post.get_all_posts_by_user(data)
+    print(all_posts)
+    return render_template('profile.html', user=user, all_posts=all_posts)
+
 
 
 @app.route('/logout')
